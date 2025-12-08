@@ -1,5 +1,5 @@
 document.getElementById("loadData").addEventListener("click", () => {
-    fetch("https://script.google.com/macros/s/AKfycbzKM9eB4Zo4GQ5nICmE_SS1TZcx7FcE184MIk9b489SgpGigKLNGokVyJPho8JT9-qR/exec", {
+    fetch("https://api.sheety.co/76a6d2f0ca2083ffa98601cdbdc2e82c/calendarioTeste/sheet1", {
         method: "GET"
     })
     .then(response => response.json())
@@ -10,3 +10,4 @@ document.getElementById("loadData").addEventListener("click", () => {
         document.getElementById("output").textContent = "Erro: " + err;
     });
 });
+
