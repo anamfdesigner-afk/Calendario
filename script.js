@@ -1,4 +1,4 @@
-// URL do Sheety (GET e POST usam a mesma URL)
+// URL do Sheety (GET e POST)
 const sheetyUrl = 'https://api.sheety.co/76a6d2f0ca2083ffa98601cdbdc2e82c/calendarioTeste/sheet1';
 
 const slotsInfo = [
@@ -10,19 +10,21 @@ const slotsInfo = [
 
 let selectedDate = null;
 let selectedSlot = null;
-let reservations = []; // dados da Sheet
+let reservations = [];
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 
-// --- Funções ---
+// --- Carregar reservas ---
 function loadReservations() {
     return fetch(sheetyUrl)
         .then(res => res.json())
         .then(json => {
-            reservations = json.sheet1; // nome da aba no Sheety
-        });
+            reservations = json.sheet1;
+        })
+        .catch(err => console.error("Erro a carregar reservas:", err));
 }
 
+// --- Renderizar calendário ---
 function renderCalendar() {
     const calendar = document.getElementById("calendar");
     calendar.innerHTML = "";
@@ -30,10 +32,8 @@ function renderCalendar() {
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     document.getElementById("monthYear").textContent = new Date(currentYear, currentMonth).toLocaleString('pt-PT', { month: 'long', year: 'numeric' });
 
-    // dias vazios no início
     for (let i = 0; i < firstDay; i++) calendar.appendChild(document.createElement("div"));
 
-    // dias do mês
     for (let d = 1; d <= daysInMonth; d++) {
         const dayDiv = document.createElement("div");
         dayDiv.textContent = d;
@@ -54,6 +54,7 @@ function renderCalendar() {
     }
 }
 
+// --- Renderizar slots ---
 function renderSlots() {
     const container = document.getElementById("slotsContainer");
     container.innerHTML = "";
@@ -78,7 +79,7 @@ function renderSlots() {
     });
 }
 
-// --- Confirmação ---
+// --- Confirmar reserva ---
 document.getElementById("confirmBtn").addEventListener("click", () => {
     if (!selectedDate || !selectedSlot) return;
 
