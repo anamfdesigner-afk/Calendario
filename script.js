@@ -4,10 +4,9 @@ document.getElementById("loadData").addEventListener("click", () => {
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+        document.getElementById("output").textContent = JSON.stringify(data.sheet1, null, 2);
     })
     .catch(err => {
         document.getElementById("output").textContent = "Erro: " + err;
     });
 });
-
