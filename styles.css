@@ -26,7 +26,6 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     max-width: 100%;
     overflow-x: hidden;
     padding: 0 10px;
@@ -59,9 +58,10 @@ h1 {
 
 .calendar {
     display: grid;
-    grid-template-columns: repeat(7, 50px);
+    grid-template-columns: repeat(7, 1fr);
     gap: 5px;
-    justify-content: center; /* centraliza o grid inteiro */
+    width: 100%;
+    justify-items: center; /* centraliza cada célula */
 }
 
 .day {
@@ -95,7 +95,6 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
 #slots-container h3 {
@@ -107,9 +106,11 @@ h1 {
 
 #slots {
     display: grid;
-    grid-template-columns: repeat(2, 150px);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    justify-content: center; /* centraliza os slots */
+    width: 100%;
+    max-width: 400px;
+    justify-items: center; /* centraliza os slots */
 }
 
 .slot {
@@ -120,6 +121,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 .slot span {
