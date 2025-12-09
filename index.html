@@ -8,29 +8,33 @@
 </head>
 <body>
 
+    <!-- TÍTULO PRINCIPAL -->
+    <h1>Pick a Breakfast date</h1>
+
+    <!-- CALENDÁRIO -->
     <div class="calendar-container">
-        <div class="calendar-header">
+        <div class="nav-month">
             <button id="prevMonth">&lt;</button>
-            <h2 id="monthYear"></h2>
+            <span id="monthYear"></span>
             <button id="nextMonth">&gt;</button>
         </div>
-        <div id="calendar"></div>
+        <div id="calendar" class="calendar"></div>
     </div>
 
+    <!-- SLOTS DE HORÁRIO -->
     <div id="slots-container">
         <h3>Horários disponíveis</h3>
-        <div id="slots"></div> <!-- ESTE É O ELEMENTO QUE FALTAVA -->
+        <div id="slots" class="slots"></div>
     </div>
 
+    <!-- BOTÃO DE CONFIRMAÇÃO -->
     <div id="confirm-container" style="display:none;">
         <button id="confirmBtn">Confirmar Reserva</button>
     </div>
 
+    <!-- MENSAGEM DE CONFIRMAÇÃO -->
     <div id="message"></div>
 
     <script src="script.js"></script>
 </body>
 </html>
-
-
-
