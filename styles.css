@@ -10,11 +10,18 @@ html, body {
     background-color: transparent; /* fundo transparente */
 }
 
+/* Container geral */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 /* Título */
 h1 {
     font-family: 'Baskerville', serif;
     font-size: 28px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 /* Títulos do mês e horários */
@@ -24,20 +31,21 @@ h1 {
     margin-bottom: 15px;
 }
 
-/* Container do calendário e horários */
+/* Container do calendário */
 .calendar-container, #slots-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    max-width: 400px; /* largura uniforme */
 }
 
+/* Navegação de mês */
 .nav-month {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 400px;
     margin-bottom: 20px;
 }
 
@@ -56,12 +64,11 @@ h1 {
     text-align: center;
 }
 
+/* Calendário */
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 8px;
-    justify-items: center;
-    margin-bottom: 40px;
     width: 100%;
 }
 
@@ -87,9 +94,9 @@ h1 {
 /* Slots */
 .slots {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, 1fr); /* 2x2 no desktop */
     gap: 15px;
-    justify-items: center;
+    width: 100%; /* ocupa a largura do container */
     margin-top: 20px;
 }
 
@@ -152,6 +159,6 @@ h1 {
 /* Responsividade */
 @media (max-width: 500px) {
     .slots {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* mobile: 1 coluna */
     }
 }
