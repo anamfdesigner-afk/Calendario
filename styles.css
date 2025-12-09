@@ -14,15 +14,14 @@ body {
 h1 {
     font-family: 'Baskerville', serif;
     font-size: 28px;
-    margin-bottom: 40px; /* mais espaço abaixo do título */
+    margin-bottom: 40px;
     color: #323f3c;
 }
 
-h2, h3 {
-    font-family: 'Lato', sans-serif;
-    font-weight: 500; /* peso menor */
-    font-size: 16px;
-    margin-bottom: 15px; /* mais espaço entre títulos e conteúdo */
+#monthYear, #slots-container h3 {
+    font-weight: 400; /* fonte mais leve */
+    font-size: 14px;  /* fonte menor */
+    margin-bottom: 15px;
     color: #323f3c;
 }
 
@@ -33,7 +32,7 @@ h2, h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px; /* mais espaço abaixo */
+    margin-bottom: 20px;
     gap: 20px;
 }
 
@@ -53,8 +52,6 @@ h2, h3 {
 }
 
 #monthYear {
-    font-weight: 500; /* peso menor */
-    font-size: 16px; /* fonte menor */
     flex-grow: 1;
     text-align: center;
 }
@@ -64,7 +61,7 @@ h2, h3 {
     grid-template-columns: repeat(7, 1fr);
     gap: 8px;
     justify-items: stretch;
-    margin-bottom: 40px; /* mais espaço abaixo do calendário */
+    margin-bottom: 40px;
     width: 100%;
 }
 
@@ -97,10 +94,6 @@ h2, h3 {
 /* ----------------------
    SLOTS
 ---------------------- */
-#slots-container h3 {
-    margin-top: 20px;
-}
-
 .slots {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -174,8 +167,8 @@ button#confirmBtn:disabled {
 
 #message {
     margin-top: 20px;
-    font-weight: bold;
-    color: #323f3c; /* cor principal */
+    font-weight: 600;
+    color: #323f3c;
     font-size: 14px;
     text-align: center;
 }
