@@ -38,6 +38,8 @@ function renderCalendar() {
 
     monthYear.innerText = date.toLocaleString("en-US", { month: "long", year: "numeric" });
 
+    const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
     for (let i = 0; i < firstDayIndex; i++) {
         calendar.innerHTML += `<div></div>`;
     }
@@ -48,12 +50,12 @@ function renderCalendar() {
         div.innerText = day;
 
         const dayDate = new Date(currentYear, currentMonth, day);
-        if (dayDate < today) {
+        if (dayDate < todayDateOnly) {
             div.classList.add("disabled");
         }
 
         div.addEventListener("click", () => {
-            if (reservaFeita || dayDate < today) return;
+            if (reservaFeita || dayDate < todayDateOnly) return;
             document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
             div.classList.add("selected");
             selectedDate = `${day}/${currentMonth + 1}/${currentYear}`;
@@ -120,7 +122,7 @@ document.getElementById("confirmBtn").onclick = async () => {
         body: JSON.stringify({ sheet1: reserva })
     });
 
-    document.getElementById("message").innerText = "Thank you! Reservation confirmed.";
+    document.getElementById("message").innerText = "Thank you, your chosen date has been confirmed";
     reservaFeita = true;
 
     await loadReservas();
