@@ -37,7 +37,8 @@ function renderCalendar() {
     monthYear.innerText = date.toLocaleString("en-US", { month: "long", year: "numeric" });
 
     const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    let todayDiv = null;
+    const tomorrowDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    let tomorrowDiv = null;
 
     for (let i = 0; i < firstDayIndex; i++) calendar.innerHTML += `<div></div>`;
 
@@ -47,30 +48,33 @@ function renderCalendar() {
         div.innerText = day;
 
         const dayDate = new Date(currentYear, currentMonth, day);
-        if (dayDate < todayDateOnly) div.classList.add("disabled");
+
+        // Bloqueia o dia de hoje e dias passados
+        if (dayDate <= todayDateOnly) div.classList.add("disabled");
 
         div.addEventListener("click", () => {
-            if (reservaFeita || dayDate < todayDateOnly) return;
+            if (reservaFeita || dayDate <= todayDateOnly) return;
             document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
             div.classList.add("selected");
             selectedDate = `${day}/${currentMonth + 1}/${currentYear}`;
             renderSlots();
         });
 
+        // Marca automaticamente amanhã como selecionado
         if (!reservaFeita &&
-            currentMonth === today.getMonth() &&
-            currentYear === today.getFullYear() &&
-            day === today.getDate()
+            currentMonth === tomorrowDateOnly.getMonth() &&
+            currentYear === tomorrowDateOnly.getFullYear() &&
+            day === tomorrowDateOnly.getDate()
         ) {
-            todayDiv = div;
+            tomorrowDiv = div;
         }
 
         calendar.appendChild(div);
     }
 
-    if (todayDiv) {
-        todayDiv.classList.add("selected");
-        selectedDate = `${todayDateOnly.getDate()}/${todayDateOnly.getMonth() + 1}/${todayDateOnly.getFullYear()}`;
+    if (tomorrowDiv) {
+        tomorrowDiv.classList.add("selected");
+        selectedDate = `${tomorrowDateOnly.getDate()}/${tomorrowDateOnly.getMonth() + 1}/${tomorrowDateOnly.getFullYear()}`;
         renderSlots();
     }
 }
