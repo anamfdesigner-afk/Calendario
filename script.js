@@ -57,7 +57,11 @@ function renderCalendar() {
             renderSlots();
         });
 
-        if (dayDate.getTime() === todayDateOnly.getTime() && !reservaFeita) {
+        if (!reservaFeita &&
+            currentMonth === today.getMonth() &&
+            currentYear === today.getFullYear() &&
+            day === today.getDate()
+        ) {
             todayDiv = div;
         }
 
