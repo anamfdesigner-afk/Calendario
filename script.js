@@ -49,7 +49,6 @@ function renderCalendar() {
 
         const dayDate = new Date(currentYear, currentMonth, day);
 
-        // Bloqueia o dia de hoje e dias passados
         if (dayDate <= todayDateOnly) div.classList.add("disabled");
 
         div.addEventListener("click", () => {
@@ -60,7 +59,6 @@ function renderCalendar() {
             renderSlots();
         });
 
-        // Marca automaticamente amanhã como selecionado
         if (!reservaFeita &&
             currentMonth === tomorrowDateOnly.getMonth() &&
             currentYear === tomorrowDateOnly.getFullYear() &&
