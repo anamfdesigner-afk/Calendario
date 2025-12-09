@@ -26,7 +26,6 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     max-width: 100%;
     overflow-x: hidden;
     padding: 0 10px;
@@ -71,7 +70,7 @@ h1 {
     text-align: center;
     cursor: pointer;
     border-radius: 4px;
-    aspect-ratio: 1 / 1; /* garante quadrado */
+    aspect-ratio: 1 / 1; /* quadrado */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -174,8 +173,8 @@ h1 {
     }
 
     .day {
-        font-size: 12px;
         padding: 5px;
+        font-size: 12px;
     }
 
     #slots {
