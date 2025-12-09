@@ -1,54 +1,70 @@
 body {
     font-family: Arial, sans-serif;
+    background: #fafafa;
     padding: 20px;
-    max-width: 600px;
-    margin: auto;
 }
 
-.calendar {
+.calendar-container {
+    width: 300px;
+    margin-bottom: 20px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .day {
     padding: 10px;
-    background-color: #eee;
+    background: white;
     text-align: center;
+    border-radius: 5px;
     cursor: pointer;
+    border: 1px solid #ddd;
 }
 
-.day.disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.day:hover {
+    background: #e0e0ff;
 }
 
-.slots {
+.selected {
+    background: #6a5acd !important;
+    color: white;
+}
+
+#slots-container {
     margin-top: 20px;
 }
 
 .slot {
     padding: 10px;
-    margin-bottom: 5px;
-    background-color: #ddd;
+    background: #fff;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .slot.full {
-    background-color: #bbb;
+    background: #ddd;
     cursor: not-allowed;
 }
 
 .slot.selected {
-    background-color: #4caf50;
+    background: #6a5acd;
     color: white;
 }
 
-button {
+#confirm-container {
     margin-top: 20px;
-    padding: 10px 15px;
-    font-size: 16px;
 }
 
 #message {
@@ -57,12 +73,3 @@ button {
     color: green;
 }
 
-.nav-month {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-month button {
-    font-size: 18px;
-}
