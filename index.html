@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Breakfast Reservation</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breakfast Reservation</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- TITLE -->
-    <h1>Pick a Breakfast date</h1>
+<h1>Pick a Breakfast date</h1>
 
-    <!-- CALENDAR -->
-    <div class="calendar-container">
-        <div class="nav-month">
-            <button id="prevMonth">&lt;</button>
-            <span id="monthYear"></span>
-            <button id="nextMonth">&gt;</button>
-        </div>
-        <div id="calendar" class="calendar"></div>
+<div class="calendar-container">
+    <div class="nav-month">
+        <button id="prevMonth">&lt;</button>
+        <span id="monthYear"></span>
+        <button id="nextMonth">&gt;</button>
     </div>
+    <div id="calendar" class="calendar"></div>
+</div>
 
-    <!-- SLOTS -->
-    <div id="slots-container">
-        <h3>Available Times</h3>
-        <div id="slots" class="slots"></div>
-    </div>
+<div id="slots-container">
+    <h3>Available Times</h3>
+    <div id="slots" class="slots"></div>
+</div>
 
-    <!-- CONFIRM BUTTON -->
-    <div id="confirm-container" style="display:none;">
-        <button id="confirmBtn">Confirm Reservation</button>
-    </div>
+<div id="confirm-container" style="display:none;">
+    <button id="confirmBtn">Confirm Reservation</button>
+</div>
 
-    <!-- CONFIRMATION MESSAGE -->
-    <div id="message"></div>
+<div id="message"></div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
