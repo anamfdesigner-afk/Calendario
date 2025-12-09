@@ -1,151 +1,146 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const API_URL = "https://api.sheety.co/76a6d2f0ca2083ffa98601cdbdc2e82c/calendarioTeste/sheet1";
+// ----------------------
+// CONFIGURAÇÃO
+// ----------------------
+const SHEETY_URL = "https://api.sheety.co/76a6d2f0ca2083ffa98601cdbdc2e82c/calendarioTeste/sheet1";
 
-    // Slots fixos todos os dias
-    const SLOTS = [
-        { hora: "08:00-08:45", vagas: 3 },
-        { hora: "08:45-09:30", vagas: 2 },
-        { hora: "09:30-10:15", vagas: 3 },
-        { hora: "10:15-11:00", vagas: 2 }
-    ];
+// HORÁRIOS E VAGAS
+const horarios = [
+    { hora: "08:00 - 08:45", vagas: 3 },
+    { hora: "08:45 - 09:30", vagas: 2 },
+    { hora: "09:30 - 10:15", vagas: 3 },
+    { hora: "10:15 - 11:00", vagas: 2 }
+];
 
-    let currentDate = new Date();
-    let selectedDate = null;
-    let selectedSlot = null;
-    let reservas = []; // dados vindos do Sheety
+let selectedDate = null;
+let selectedSlot = null;
+let reservas = [];
 
-    const calendarEl = document.getElementById("calendar");
-    const slotContainer = document.getElementById("slotContainer");
-    const confirmBtn = document.getElementById("confirmBtn");
+// ----------------------
+// CARREGAR RESERVAS EXISTENTES
+// ----------------------
+async function loadReservas() {
+    try {
+        const res = await fetch(SHEETY_URL);
+        const data = await res.json();
+        reservas = data.sheet1 || [];
+    } catch (e) {
+        console.error("Erro ao carregar reservas:", e);
+    }
+}
 
-    confirmBtn.disabled = true;
+// ----------------------
+// CALENDÁRIO
+// ----------------------
+const calendar = document.getElementById("calendar");
+const monthYear = document.getElementById("monthYear");
 
-    // --------------------------
-    // 1) BUSCAR RESERVAS EXISTENTES DO SHEETY
-    // --------------------------
-    function carregarReservas() {
-        return fetch(API_URL)
-            .then(r => r.json())
-            .then(data => {
-                reservas = data.sheet1;
-                renderCalendar();
-            });
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+function renderCalendar() {
+    calendar.innerHTML = "";
+
+    const date = new Date(currentYear, currentMonth, 1);
+    const firstDayIndex = date.getDay();
+    const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    monthYear.innerText = date.toLocaleString("pt-PT", { month: "long", year: "numeric" });
+
+    for (let i = 0; i < firstDayIndex; i++) {
+        calendar.innerHTML += `<div></div>`;
     }
 
-    // --------------------------
-    // 2) RENDER CALENDÁRIO
-    // --------------------------
-    function renderCalendar() {
-        calendarEl.innerHTML = "";
+    for (let day = 1; day <= lastDay; day++) {
+        const div = document.createElement("div");
+        div.classList.add("day");
+        div.innerText = day;
 
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const lastDate = new Date(year, month + 1, 0).getDate();
-
-        const title = document.createElement("h2");
-        title.textContent = `${currentDate.toLocaleString("pt-PT", { month: "long" })} ${year}`;
-        calendarEl.appendChild(title);
-
-        const grid = document.createElement("div");
-        grid.className = "calendar-grid";
-
-        // espaços antes do dia 1
-        for (let i = 0; i < firstDay; i++) {
-            const empty = document.createElement("div");
-            empty.className = "empty";
-            grid.appendChild(empty);
-        }
-
-        // dias do mês
-        for (let day = 1; day <= lastDate; day++) {
-            const btn = document.createElement("button");
-            btn.textContent = day;
-
-            btn.addEventListener("click", () => {
-                selectedDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-                renderSlots();
-            });
-
-            grid.appendChild(btn);
-        }
-
-        calendarEl.appendChild(grid);
-    }
-
-    // --------------------------
-    // 3) RENDER SLOTS POR DIA
-    // --------------------------
-    function renderSlots() {
-        slotContainer.innerHTML = "";
-
-        if (!selectedDate) return;
-
-        slotContainer.innerHTML = `<h3>Horários para ${selectedDate}</h3>`;
-
-        SLOTS.forEach(slot => {
-            const reservasSlot = reservas.filter(r => r.Data === selectedDate && r.Hora === slot.hora).length;
-            const vagasRestantes = slot.vagas - reservasSlot;
-
-            const btn = document.createElement("button");
-            btn.textContent = `${slot.hora} (${vagasRestantes} vagas)`;
-
-            if (vagasRestantes <= 0) {
-                btn.disabled = true;
-                btn.classList.add("disabled");
-            }
-
-            btn.addEventListener("click", () => {
-                selectedSlot = slot.hora;
-                confirmBtn.disabled = false;
-            });
-
-            slotContainer.appendChild(btn);
+        div.addEventListener("click", () => {
+            document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+            div.classList.add("selected");
+            selectedDate = `${day}/${currentMonth + 1}/${currentYear}`;
+            renderSlots();
         });
+
+        calendar.appendChild(div);
     }
+}
 
-    // --------------------------
-    // 4) ENVIAR RESERVA PARA O SHEETY (POST)
-    // --------------------------
-    confirmBtn.addEventListener("click", () => {
-        if (!selectedDate || !selectedSlot) return;
+document.getElementById("prevMonth").onclick = () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    }
+    renderCalendar();
+};
 
-        fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                sheet1: {
-                    Data: selectedDate,
-                    Hora: selectedSlot
-                }
-            })
-        })
-            .then(r => r.json())
-            .then(() => {
-                alert("Obrigada! A tua reserva foi registada.");
-                confirmBtn.disabled = true;
+document.getElementById("nextMonth").onclick = () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    renderCalendar();
+};
 
-                // recarregar dados para atualizar vagas
-                carregarReservas();
+// ----------------------
+// HORÁRIOS
+// ----------------------
+function renderSlots() {
+    const slotsDiv = document.getElementById("slots");
+    slotsDiv.innerHTML = "";
+
+    horarios.forEach(h => {
+        const usados = reservas.filter(r => r.data === selectedDate && r.hora === h.hora).length;
+        const full = usados >= h.vagas;
+
+        const div = document.createElement("div");
+        div.classList.add("slot");
+        if (full) div.classList.add("full");
+
+        div.innerText = `${h.hora} (${h.vagas - usados} vagas)`;
+
+        if (!full) {
+            div.addEventListener("click", () => {
+                document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+                div.classList.add("selected");
+                selectedSlot = h.hora;
+                document.getElementById("confirm-container").style.display = "block";
             });
+        }
+
+        slotsDiv.appendChild(div);
+    });
+}
+
+// ----------------------
+// CONFIRMAR
+// ----------------------
+document.getElementById("confirmBtn").onclick = async () => {
+    if (!selectedDate || !selectedSlot) return;
+
+    const reserva = {
+        data: selectedDate,
+        hora: selectedSlot
+    };
+
+    await fetch(SHEETY_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sheet1: reserva })
     });
 
-    // --------------------------
-    // 5) BOTÕES DE NAVEGAÇÃO ENTRE MESES
-    // --------------------------
-    document.getElementById("prevMonth").addEventListener("click", () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar();
-    });
+    document.getElementById("message").innerText = "Obrigada! Reserva confirmada.";
+    await loadReservas();
+    renderSlots();
+};
 
-    document.getElementById("nextMonth").addEventListener("click", () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar();
-    });
+// ----------------------
+// INICIALIZAÇÃO
+// ----------------------
+loadReservas().then(renderCalendar);
 
-    // Carrega tudo
-    carregarReservas();
-});
 
