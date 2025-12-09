@@ -1,4 +1,8 @@
 // URL do Sheety (GET e POST)
+
+console.log("Script carregado");
+console.log("Calendar div:", document.getElementById("calendar"));
+
 const sheetyUrl = 'https://api.sheety.co/76a6d2f0ca2083ffa98601cdbdc2e82c/calendarioTeste/sheet1';
 
 const slotsInfo = [
@@ -113,3 +117,4 @@ document.getElementById("nextMonth").addEventListener("click", () => {
 
 // --- Inicialização ---
 loadReservations().then(renderCalendar);
+
