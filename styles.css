@@ -26,6 +26,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     max-width: 100%;
     overflow-x: hidden;
     padding: 0 10px;
@@ -46,6 +47,8 @@ h1 {
     font-size: 16px;
     font-weight: 500;
     margin: 0;
+    text-align: center;
+    flex: 1;
 }
 
 .calendar-header button {
@@ -60,6 +63,7 @@ h1 {
     gap: 5px;
     width: 100%;
     box-sizing: border-box;
+    justify-items: center; /* centraliza cada célula do grid */
 }
 
 .day {
@@ -90,6 +94,9 @@ h1 {
     padding: 0 10px;
     box-sizing: border-box;
     margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #slots-container h3 {
@@ -102,6 +109,8 @@ h1 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    width: 100%;
+    justify-items: center; /* centraliza os slots */
 }
 
 .slot {
@@ -112,6 +121,8 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 180px;
 }
 
 .slot span {
@@ -143,6 +154,7 @@ h1 {
     margin-top: 20px;
     font-weight: bold;
     color: #323f3c;
+    text-align: center;
 }
 
 /* ----------------------
