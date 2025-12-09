@@ -1,120 +1,151 @@
-// URL do Sheety (GET e POST)
+document.addEventListener("DOMContentLoaded", () => {
 
-console.log("Script carregado");
-console.log("Calendar div:", document.getElementById("calendar"));
+    const API_URL = "https://api.sheety.co/76a6d2f0ca2083ffa98601cdbdc2e82c/calendarioTeste/sheet1";
 
-const sheetyUrl = 'https://api.sheety.co/76a6d2f0ca2083ffa98601cdbdc2e82c/calendarioTeste/sheet1';
+    // Slots fixos todos os dias
+    const SLOTS = [
+        { hora: "08:00-08:45", vagas: 3 },
+        { hora: "08:45-09:30", vagas: 2 },
+        { hora: "09:30-10:15", vagas: 3 },
+        { hora: "10:15-11:00", vagas: 2 }
+    ];
 
-const slotsInfo = [
-    { time: "08:00-08:45", max: 3 },
-    { time: "08:45-09:30", max: 2 },
-    { time: "09:30-10:15", max: 3 },
-    { time: "10:15-11:00", max: 2 }
-];
+    let currentDate = new Date();
+    let selectedDate = null;
+    let selectedSlot = null;
+    let reservas = []; // dados vindos do Sheety
 
-let selectedDate = null;
-let selectedSlot = null;
-let reservations = [];
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
+    const calendarEl = document.getElementById("calendar");
+    const slotContainer = document.getElementById("slotContainer");
+    const confirmBtn = document.getElementById("confirmBtn");
 
-// --- Carregar reservas ---
-function loadReservations() {
-    return fetch(sheetyUrl)
-        .then(res => res.json())
-        .then(json => {
-            reservations = json.sheet1;
-        })
-        .catch(err => console.error("Erro a carregar reservas:", err));
-}
+    confirmBtn.disabled = true;
 
-// --- Renderizar calendário ---
-function renderCalendar() {
-    const calendar = document.getElementById("calendar");
-    calendar.innerHTML = "";
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    document.getElementById("monthYear").textContent = new Date(currentYear, currentMonth).toLocaleString('pt-PT', { month: 'long', year: 'numeric' });
-
-    for (let i = 0; i < firstDay; i++) calendar.appendChild(document.createElement("div"));
-
-    for (let d = 1; d <= daysInMonth; d++) {
-        const dayDiv = document.createElement("div");
-        dayDiv.textContent = d;
-        dayDiv.className = "day";
-
-        const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-        const todayStr = new Date().toISOString().split("T")[0];
-        if (dateStr < todayStr) dayDiv.classList.add("disabled");
-
-        dayDiv.addEventListener("click", () => {
-            if (dayDiv.classList.contains("disabled")) return;
-            selectedDate = dateStr;
-            selectedSlot = null;
-            renderSlots();
-        });
-
-        calendar.appendChild(dayDiv);
+    // --------------------------
+    // 1) BUSCAR RESERVAS EXISTENTES DO SHEETY
+    // --------------------------
+    function carregarReservas() {
+        return fetch(API_URL)
+            .then(r => r.json())
+            .then(data => {
+                reservas = data.sheet1;
+                renderCalendar();
+            });
     }
-}
 
-// --- Renderizar slots ---
-function renderSlots() {
-    const container = document.getElementById("slotsContainer");
-    container.innerHTML = "";
-    if (!selectedDate) return;
+    // --------------------------
+    // 2) RENDER CALENDÁRIO
+    // --------------------------
+    function renderCalendar() {
+        calendarEl.innerHTML = "";
 
-    slotsInfo.forEach(slot => {
-        const count = reservations.filter(r => r.Data === selectedDate && r.Hora === slot.time).length;
-        const slotDiv = document.createElement("div");
-        slotDiv.textContent = `${slot.time} (${count}/${slot.max})`;
-        slotDiv.className = "slot";
-        if (count >= slot.max) slotDiv.classList.add("full");
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
 
-        slotDiv.addEventListener("click", () => {
-            if (slotDiv.classList.contains("full")) return;
-            selectedSlot = slot.time;
-            document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
-            slotDiv.classList.add("selected");
-            document.getElementById("confirmBtn").disabled = false;
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        const title = document.createElement("h2");
+        title.textContent = `${currentDate.toLocaleString("pt-PT", { month: "long" })} ${year}`;
+        calendarEl.appendChild(title);
+
+        const grid = document.createElement("div");
+        grid.className = "calendar-grid";
+
+        // espaços antes do dia 1
+        for (let i = 0; i < firstDay; i++) {
+            const empty = document.createElement("div");
+            empty.className = "empty";
+            grid.appendChild(empty);
+        }
+
+        // dias do mês
+        for (let day = 1; day <= lastDate; day++) {
+            const btn = document.createElement("button");
+            btn.textContent = day;
+
+            btn.addEventListener("click", () => {
+                selectedDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                renderSlots();
+            });
+
+            grid.appendChild(btn);
+        }
+
+        calendarEl.appendChild(grid);
+    }
+
+    // --------------------------
+    // 3) RENDER SLOTS POR DIA
+    // --------------------------
+    function renderSlots() {
+        slotContainer.innerHTML = "";
+
+        if (!selectedDate) return;
+
+        slotContainer.innerHTML = `<h3>Horários para ${selectedDate}</h3>`;
+
+        SLOTS.forEach(slot => {
+            const reservasSlot = reservas.filter(r => r.Data === selectedDate && r.Hora === slot.hora).length;
+            const vagasRestantes = slot.vagas - reservasSlot;
+
+            const btn = document.createElement("button");
+            btn.textContent = `${slot.hora} (${vagasRestantes} vagas)`;
+
+            if (vagasRestantes <= 0) {
+                btn.disabled = true;
+                btn.classList.add("disabled");
+            }
+
+            btn.addEventListener("click", () => {
+                selectedSlot = slot.hora;
+                confirmBtn.disabled = false;
+            });
+
+            slotContainer.appendChild(btn);
         });
+    }
 
-        container.appendChild(slotDiv);
+    // --------------------------
+    // 4) ENVIAR RESERVA PARA O SHEETY (POST)
+    // --------------------------
+    confirmBtn.addEventListener("click", () => {
+        if (!selectedDate || !selectedSlot) return;
+
+        fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                sheet1: {
+                    Data: selectedDate,
+                    Hora: selectedSlot
+                }
+            })
+        })
+            .then(r => r.json())
+            .then(() => {
+                alert("Obrigada! A tua reserva foi registada.");
+                confirmBtn.disabled = true;
+
+                // recarregar dados para atualizar vagas
+                carregarReservas();
+            });
     });
-}
 
-// --- Confirmar reserva ---
-document.getElementById("confirmBtn").addEventListener("click", () => {
-    if (!selectedDate || !selectedSlot) return;
+    // --------------------------
+    // 5) BOTÕES DE NAVEGAÇÃO ENTRE MESES
+    // --------------------------
+    document.getElementById("prevMonth").addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    });
 
-    fetch(sheetyUrl, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ sheet1: { Data: selectedDate, Hora: selectedSlot }})
-    })
-    .then(res => res.json())
-    .then(() => {
-        document.getElementById("message").textContent = "Obrigado, a tua reserva foi efetuada!";
-        loadReservations().then(renderSlots);
-        document.getElementById("confirmBtn").disabled = true;
-        selectedSlot = null;
-    })
-    .catch(err => alert("Erro ao confirmar: " + err));
+    document.getElementById("nextMonth").addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    });
+
+    // Carrega tudo
+    carregarReservas();
 });
-
-// --- Navegação de meses ---
-document.getElementById("prevMonth").addEventListener("click", () => { 
-    currentMonth--; 
-    if(currentMonth<0){currentMonth=11; currentYear--;} 
-    renderCalendar(); 
-});
-
-document.getElementById("nextMonth").addEventListener("click", () => { 
-    currentMonth++; 
-    if(currentMonth>11){currentMonth=0; currentYear++;} 
-    renderCalendar(); 
-});
-
-// --- Inicialização ---
-loadReservations().then(renderCalendar);
 
