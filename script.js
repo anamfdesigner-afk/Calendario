@@ -1,6 +1,3 @@
-// ----------------------
-// CONFIGURATION
-// ----------------------
 const SHEETY_URL = "https://api.sheety.co/76a6d2f0ca2083ffa98601cdbdc2e82c/calendarioTeste/sheet1";
 
 const horarios = [
@@ -15,9 +12,6 @@ let selectedSlot = null;
 let reservas = [];
 let reservaFeita = false;
 
-// ----------------------
-// LOAD EXISTING RESERVATIONS
-// ----------------------
 async function loadReservas() {
     try {
         const res = await fetch(SHEETY_URL);
@@ -28,14 +22,12 @@ async function loadReservas() {
     }
 }
 
-// ----------------------
-// CALENDAR
-// ----------------------
 const calendar = document.getElementById("calendar");
 const monthYear = document.getElementById("monthYear");
 
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
+const today = new Date();
 
 function renderCalendar() {
     calendar.innerHTML = "";
@@ -55,8 +47,13 @@ function renderCalendar() {
         div.classList.add("day");
         div.innerText = day;
 
+        const dayDate = new Date(currentYear, currentMonth, day);
+        if (dayDate < today) {
+            div.classList.add("disabled");
+        }
+
         div.addEventListener("click", () => {
-            if (reservaFeita) return;
+            if (reservaFeita || dayDate < today) return;
             document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
             div.classList.add("selected");
             selectedDate = `${day}/${currentMonth + 1}/${currentYear}`;
@@ -85,9 +82,6 @@ document.getElementById("nextMonth").onclick = () => {
     renderCalendar();
 };
 
-// ----------------------
-// SLOTS
-// ----------------------
 function renderSlots() {
     const slotsDiv = document.getElementById("slots");
     slotsDiv.innerHTML = "";
@@ -115,16 +109,10 @@ function renderSlots() {
     });
 }
 
-// ----------------------
-// CONFIRM BUTTON
-// ----------------------
 document.getElementById("confirmBtn").onclick = async () => {
     if (!selectedDate || !selectedSlot || reservaFeita) return;
 
-    const reserva = {
-        data: selectedDate,
-        hora: selectedSlot
-    };
+    const reserva = { data: selectedDate, hora: selectedSlot };
 
     await fetch(SHEETY_URL, {
         method: "POST",
@@ -148,7 +136,4 @@ document.getElementById("confirmBtn").onclick = async () => {
     document.getElementById("confirmBtn").style.opacity = "0.6";
 };
 
-// ----------------------
-// INITIALIZATION
-// ----------------------
 loadReservas().then(renderCalendar);
