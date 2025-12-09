@@ -103,6 +103,7 @@ h1 {
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 #slots {
@@ -110,6 +111,7 @@ h1 {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     width: 100%;
+    max-width: 400px;
     justify-items: center; /* centraliza os slots */
 }
 
@@ -163,6 +165,7 @@ h1 {
 @media (max-width: 500px) {
     .calendar {
         grid-template-columns: repeat(7, minmax(0, 1fr));
+        justify-items: center; /* centraliza cada célula */
     }
 
     .day {
@@ -172,6 +175,13 @@ h1 {
 
     #slots {
         grid-template-columns: 1fr;
+        width: 100%;
+        justify-items: center; /* centraliza slots */
+    }
+
+    .slot {
+        width: 100%;
+        max-width: none;
     }
 
     #slots-container h3, .calendar-header h2 {
