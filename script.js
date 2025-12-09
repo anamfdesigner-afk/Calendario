@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+
 
 // ----------------------
 // CONFIGURAÇÃO
@@ -142,6 +142,7 @@ document.getElementById("confirmBtn").onclick = async () => {
 // INICIALIZAÇÃO
 // ----------------------
 loadReservas().then(renderCalendar);
+
 
 
 
