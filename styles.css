@@ -72,6 +72,7 @@ h1 {
     text-align: center;
     cursor: pointer;
     border-radius: 4px;
+    min-width: 0;
 }
 
 .day.selected {
@@ -164,13 +165,16 @@ h1 {
 ---------------------- */
 @media (max-width: 500px) {
     .calendar {
-        grid-template-columns: repeat(7, minmax(0, 1fr));
+        grid-template-columns: repeat(7, 1fr);
         justify-items: center; /* centraliza cada célula */
+        gap: 3px; /* menos espaço entre dias */
     }
 
     .day {
-        padding: 8px;
-        font-size: 12px;
+        padding: 5px; /* menor padding */
+        font-size: 10px; /* menor fonte */
+        min-width: 0;
+        box-sizing: border-box;
     }
 
     #slots {
