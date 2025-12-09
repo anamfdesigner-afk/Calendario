@@ -2,28 +2,44 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Calendário de Reservas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário</title>
+
+    <!-- LIGAÇÃO CORRECTA AO CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<h1>Calendário de Reservas</h1>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button id="prev-month">&lt;</button>
+            <h2 id="current-month"></h2>
+            <button id="next-month">&gt;</button>
+        </div>
 
-<div class="nav-month">
-    <button id="prevMonth">&larr;</button>
-    <h2 id="monthYear"></h2>
-    <button id="nextMonth">&rarr;</button>
-</div>
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th>Dom</th>
+                    <th>Seg</th>
+                    <th>Ter</th>
+                    <th>Qua</th>
+                    <th>Qui</th>
+                    <th>Sex</th>
+                    <th>Sáb</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+        </table>
 
-<div class="calendar" id="calendar"></div>
+        <div id="slots-container">
+            <h3>Horários disponíveis</h3>
+            <div id="slots"></div>
+        </div>
+    </div>
 
-<div class="slots" id="slotsContainer"></div>
-
-<button id="confirmBtn" disabled>Confirmar</button>
-
-<div id="message"></div>
-
-<script src="script.js"></script>
+    <!-- LIGAÇÃO CORRECTA AO JS -->
+    <script src="script.js"></script>
 </body>
 </html>
-
