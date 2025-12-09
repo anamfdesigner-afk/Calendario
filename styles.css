@@ -3,12 +3,11 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
     font-family: 'Lato', Arial, sans-serif;
     text-align: center;
     color: #323f3c;
     box-sizing: border-box;
-    background-color: transparent; /* sem cor de fundo */
+    background-color: transparent; /* fundo transparente */
 }
 
 /* Título */
@@ -25,13 +24,12 @@ h1 {
     margin-bottom: 15px;
 }
 
-/* Calendário */
+/* Container do calendário e horários */
 .calendar-container, #slots-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    text-align: center;
 }
 
 .nav-month {
@@ -72,8 +70,8 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
-    background-color: transparent; /* sem cor de fundo */
     border: 1px solid #ddd;
+    background-color: transparent;
 }
 
 .day.selected {
@@ -82,7 +80,6 @@ h1 {
 }
 
 .day.disabled {
-    background-color: transparent;
     color: #aaa;
     cursor: not-allowed;
 }
@@ -103,8 +100,8 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: transparent; /* sem cor de fundo */
     border: 1px solid #ddd;
+    background-color: transparent;
 }
 
 .slot.selected {
