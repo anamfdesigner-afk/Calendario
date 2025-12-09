@@ -59,11 +59,9 @@ h1 {
 
 .calendar {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 50px);
     gap: 5px;
-    width: 100%;
-    box-sizing: border-box;
-    justify-items: center; /* centraliza cada célula do grid */
+    justify-content: center; /* centraliza o grid inteiro */
 }
 
 .day {
@@ -97,20 +95,21 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 #slots-container h3 {
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 #slots {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 150px);
     gap: 10px;
-    width: 100%;
-    justify-items: center; /* centraliza os slots */
+    justify-content: center; /* centraliza os slots */
 }
 
 .slot {
@@ -121,8 +120,6 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 180px;
 }
 
 .slot span {
