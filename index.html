@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Breakfast Reservation</title>
+    <title>Pick a Breakfast Date</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
     <h1>Pick a Breakfast Date</h1>
 
     <div class="calendar-container">
-        <div class="nav-month">
+        <div class="calendar-header">
             <button id="prevMonth">&lt;</button>
             <h2 id="monthYear"></h2>
             <button id="nextMonth">&gt;</button>
@@ -19,8 +20,8 @@
     </div>
 
     <div id="slots-container">
-        <h3>Available Time Slots</h3>
-        <div id="slots" class="slots"></div>
+        <h3>Available Times</h3>
+        <div id="slots"></div>
     </div>
 
     <div id="confirm-container" style="display:none;">
