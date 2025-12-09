@@ -1,39 +1,45 @@
-/* ----------------------
-   GENERAL STYLES
----------------------- */
-body {
+/* Reset e corpo */
+html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
     font-family: 'Lato', Arial, sans-serif;
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
-    color: #323f3c;
-    background-color: #f9f9f9;
     text-align: center;
+    color: #323f3c;
+    box-sizing: border-box;
 }
 
+/* Título */
 h1 {
     font-family: 'Baskerville', serif;
     font-size: 28px;
     margin-bottom: 40px;
-    color: #323f3c;
 }
 
+/* Títulos do mês e horários */
 #monthYear, #slots-container h3 {
-    font-weight: 400; /* fonte mais leve */
-    font-size: 14px;  /* fonte menor */
+    font-weight: 400;
+    font-size: 14px;
     margin-bottom: 15px;
-    color: #323f3c;
 }
 
-/* ----------------------
-   CALENDAR
----------------------- */
+/* Calendário */
+.calendar-container, #slots-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
 .nav-month {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    max-width: 400px;
     margin-bottom: 20px;
-    gap: 20px;
 }
 
 .nav-month button {
@@ -44,11 +50,6 @@ h1 {
     padding: 6px 12px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.nav-month button:hover {
-    background-color: #4a5a57;
 }
 
 #monthYear {
@@ -60,24 +61,18 @@ h1 {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 8px;
-    justify-items: stretch;
+    justify-items: center;
     margin-bottom: 40px;
     width: 100%;
 }
 
 .day {
     padding: 12px;
-    background-color: #e6e6e6;
     border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
-    text-align: center;
-    transition: all 0.2s ease;
-}
-
-.day:hover {
-    background-color: #d4d4d4;
-    transform: scale(1.05);
+    background-color: transparent;
+    border: 1px solid #ddd;
 }
 
 .day.selected {
@@ -86,43 +81,34 @@ h1 {
 }
 
 .day.disabled {
-    background-color: #ccc;
+    background-color: transparent;
+    color: #aaa;
     cursor: not-allowed;
-    pointer-events: none;
 }
 
-/* ----------------------
-   SLOTS
----------------------- */
+/* Slots */
 .slots {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 15px;
-    justify-items: stretch;
-    margin-top: 10px;
-    width: 100%;
+    justify-items: center;
+    margin-top: 20px;
 }
 
 .slot {
-    background-color: #ddd;
     border-radius: 8px;
     padding: 12px;
     cursor: pointer;
-    transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.slot:hover {
-    transform: scale(1.03);
-    background-color: #cfcfcf;
+    background-color: transparent;
+    border: 1px solid #ddd;
 }
 
 .slot.selected {
     background-color: #323f3c;
     color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .slot.full {
@@ -141,10 +127,8 @@ h1 {
     margin-top: 4px;
 }
 
-/* ----------------------
-   CONFIRM BUTTON & MESSAGE
----------------------- */
-button#confirmBtn {
+/* Botão e mensagem */
+#confirmBtn {
     margin-top: 20px;
     padding: 12px 18px;
     font-size: 16px;
@@ -153,14 +137,9 @@ button#confirmBtn {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
 }
 
-button#confirmBtn:hover {
-    background-color: #4a5a57;
-}
-
-button#confirmBtn:disabled {
+#confirmBtn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
@@ -170,27 +149,11 @@ button#confirmBtn:disabled {
     font-weight: 600;
     color: #323f3c;
     font-size: 14px;
-    text-align: center;
 }
 
-/* ----------------------
-   RESPONSIVITY
----------------------- */
+/* Responsividade */
 @media (max-width: 500px) {
-    body {
-        padding: 10px;
-    }
-
     .slots {
         grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .slot {
-        width: 100%;
-    }
-
-    .calendar {
-        grid-template-columns: repeat(7, 1fr);
     }
 }
