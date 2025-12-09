@@ -1,3 +1,4 @@
+/* GLOBAL */
 body {
     font-family: Lato, sans-serif;
     padding: 20px;
@@ -6,21 +7,25 @@ body {
     text-align: center;
 }
 
+/* TITLE */
 h1 {
     font-family: Baskervile, serif;
     font-weight: normal;
     font-size: 28px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
+/* CALENDAR CONTAINER */
 .calendar-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     max-width: 100%;
+    overflow-x: hidden;
     padding: 0 10px;
     box-sizing: border-box;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .calendar-header {
@@ -46,27 +51,21 @@ h1 {
     cursor: pointer;
 }
 
+/* CALENDAR GRID */
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
     width: 100%;
-    max-width: 420px;
-    justify-items: center;
+    box-sizing: border-box;
 }
 
 .day {
+    padding: 10px;
     background-color: #eee;
     text-align: center;
     cursor: pointer;
     border-radius: 4px;
-    width: 100%;
-    max-width: 50px;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
 }
 
 .day.selected {
@@ -80,8 +79,10 @@ h1 {
     cursor: not-allowed;
 }
 
+/* SLOTS */
 #slots-container {
     max-width: 100%;
+    overflow-x: hidden;
     padding: 0 10px;
     box-sizing: border-box;
     margin-top: 30px;
@@ -94,7 +95,6 @@ h1 {
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 10px;
-    text-align: center;
 }
 
 #slots {
@@ -102,7 +102,6 @@ h1 {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     width: 100%;
-    max-width: 400px;
     justify-items: center;
 }
 
@@ -133,6 +132,7 @@ h1 {
     cursor: not-allowed;
 }
 
+/* CONFIRM BUTTON */
 #confirm-container button {
     margin-top: 20px;
     padding: 10px 15px;
@@ -147,16 +147,14 @@ h1 {
     text-align: center;
 }
 
-/* ----------------------
-   RESPONSIVO MOBILE
----------------------- */
+/* MOBILE */
 @media (max-width: 500px) {
     .calendar {
-        max-width: 100%;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
     }
 
     .day {
-        max-width: 40px;
+        padding: 8px;
         font-size: 12px;
     }
 
@@ -164,11 +162,8 @@ h1 {
         grid-template-columns: 1fr;
     }
 
-    .slot {
-        max-width: none;
-    }
-
-    #slots-container h3, .calendar-header h2 {
+    #slots-container h3,
+    .calendar-header h2 {
         font-size: 14px;
     }
 }
