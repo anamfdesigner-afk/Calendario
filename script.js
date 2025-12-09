@@ -1,9 +1,8 @@
 // ----------------------
-// CONFIGURAÇÃO
+// CONFIGURATION
 // ----------------------
 const SHEETY_URL = "https://api.sheety.co/76a6d2f0ca2083ffa98601cdbdc2e82c/calendarioTeste/sheet1";
 
-// HORÁRIOS E VAGAS
 const horarios = [
     { hora: "08:00 - 08:45", vagas: 3 },
     { hora: "08:45 - 09:30", vagas: 2 },
@@ -14,10 +13,10 @@ const horarios = [
 let selectedDate = null;
 let selectedSlot = null;
 let reservas = [];
-let reservaFeita = false; // indica se a pessoa já confirmou
+let reservaFeita = false;
 
 // ----------------------
-// CARREGAR RESERVAS EXISTENTES
+// LOAD EXISTING RESERVATIONS
 // ----------------------
 async function loadReservas() {
     try {
@@ -25,12 +24,12 @@ async function loadReservas() {
         const data = await res.json();
         reservas = data.sheet1 || [];
     } catch (e) {
-        console.error("Erro ao carregar reservas:", e);
+        console.error("Error loading reservations:", e);
     }
 }
 
 // ----------------------
-// CALENDÁRIO
+// CALENDAR
 // ----------------------
 const calendar = document.getElementById("calendar");
 const monthYear = document.getElementById("monthYear");
@@ -45,7 +44,7 @@ function renderCalendar() {
     const firstDayIndex = date.getDay();
     const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-    monthYear.innerText = date.toLocaleString("pt-PT", { month: "long", year: "numeric" });
+    monthYear.innerText = date.toLocaleString("en-US", { month: "long", year: "numeric" });
 
     for (let i = 0; i < firstDayIndex; i++) {
         calendar.innerHTML += `<div></div>`;
@@ -57,7 +56,7 @@ function renderCalendar() {
         div.innerText = day;
 
         div.addEventListener("click", () => {
-            if (reservaFeita) return; // bloqueia seleção se já reservou
+            if (reservaFeita) return;
             document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
             div.classList.add("selected");
             selectedDate = `${day}/${currentMonth + 1}/${currentYear}`;
@@ -87,7 +86,7 @@ document.getElementById("nextMonth").onclick = () => {
 };
 
 // ----------------------
-// HORÁRIOS
+// SLOTS
 // ----------------------
 function renderSlots() {
     const slotsDiv = document.getElementById("slots");
@@ -101,9 +100,8 @@ function renderSlots() {
         div.classList.add("slot");
         if (full) div.classList.add("full");
 
-        div.innerText = `${h.hora} (${h.vagas - usados} vagas)`;
+        div.innerHTML = `<div class="hora">${h.hora}</div><div class="vagas">${h.vagas - usados} spots left</div>`;
 
-        // Apenas slots disponíveis e se ainda não reservou
         if (!full && !reservaFeita) {
             div.addEventListener("click", () => {
                 document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
@@ -118,7 +116,7 @@ function renderSlots() {
 }
 
 // ----------------------
-// CONFIRMAR
+// CONFIRM BUTTON
 // ----------------------
 document.getElementById("confirmBtn").onclick = async () => {
     if (!selectedDate || !selectedSlot || reservaFeita) return;
@@ -134,13 +132,12 @@ document.getElementById("confirmBtn").onclick = async () => {
         body: JSON.stringify({ sheet1: reserva })
     });
 
-    document.getElementById("message").innerText = "Obrigada! Reserva confirmada.";
-    reservaFeita = true; // marca que a pessoa já reservou
+    document.getElementById("message").innerText = "Thank you! Reservation confirmed.";
+    reservaFeita = true;
 
     await loadReservas();
     renderSlots();
 
-    // BLOQUEIA TODOS OS SLOTS E O BOTÃO DE CONFIRMAÇÃO
     document.querySelectorAll(".slot").forEach(slot => {
         slot.classList.add("full");
         slot.style.pointerEvents = "none";
@@ -152,6 +149,6 @@ document.getElementById("confirmBtn").onclick = async () => {
 };
 
 // ----------------------
-// INICIALIZAÇÃO
+// INITIALIZATION
 // ----------------------
 loadReservas().then(renderCalendar);
