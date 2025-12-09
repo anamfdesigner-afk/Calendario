@@ -20,8 +20,8 @@ h1 {
 .calendar-container,
 #slots-container {
     width: 100%;
-    max-width: 400px; /* largura uniforme */
-    margin: 0 auto;   /* centraliza */
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 /* Títulos do mês e horários */
@@ -61,7 +61,8 @@ h1 {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 8px;
-    margin: 0 auto; /* centraliza o grid */
+    width: 100%;
+    margin: 0 auto;
 }
 
 /* Dias */
@@ -89,8 +90,8 @@ h1 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
+    width: 100%;
     margin: 20px auto 0 auto;
-    width: 100%; /* ocupa a largura do container */
 }
 
 .slot {
@@ -152,6 +153,6 @@ h1 {
 /* Responsividade */
 @media (max-width: 500px) {
     .slots {
-        grid-template-columns: 1fr; /* mobile: 1 coluna */
+        grid-template-columns: 1fr;
     }
 }
