@@ -14,7 +14,7 @@ const horarios = [
 let selectedDate = null;
 let selectedSlot = null;
 let reservas = [];
-let reservaFeita = false; // <- NOVO: indica se a pessoa já confirmou
+let reservaFeita = false; // indica se a pessoa já confirmou
 
 // ----------------------
 // CARREGAR RESERVAS EXISTENTES
@@ -57,7 +57,7 @@ function renderCalendar() {
         div.innerText = day;
 
         div.addEventListener("click", () => {
-            if (reservaFeita) return; // BLOQUEIA seleção se já reservou
+            if (reservaFeita) return; // bloqueia seleção se já reservou
             document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
             div.classList.add("selected");
             selectedDate = `${day}/${currentMonth + 1}/${currentYear}`;
@@ -103,6 +103,7 @@ function renderSlots() {
 
         div.innerText = `${h.hora} (${h.vagas - usados} vagas)`;
 
+        // Apenas slots disponíveis e se ainda não reservou
         if (!full && !reservaFeita) {
             div.addEventListener("click", () => {
                 document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
@@ -139,7 +140,7 @@ document.getElementById("confirmBtn").onclick = async () => {
     await loadReservas();
     renderSlots();
 
-    // BLOQUEIA TODOS OS SLOTS E O BOTÃO
+    // BLOQUEIA TODOS OS SLOTS E O BOTÃO DE CONFIRMAÇÃO
     document.querySelectorAll(".slot").forEach(slot => {
         slot.classList.add("full");
         slot.style.pointerEvents = "none";
