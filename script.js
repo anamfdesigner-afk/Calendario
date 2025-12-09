@@ -31,18 +31,15 @@ const today = new Date();
 
 function renderCalendar() {
     calendar.innerHTML = "";
-
     const date = new Date(currentYear, currentMonth, 1);
     const firstDayIndex = date.getDay();
     const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
-
     monthYear.innerText = date.toLocaleString("en-US", { month: "long", year: "numeric" });
 
     const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    let todayDiv = null;
 
-    for (let i = 0; i < firstDayIndex; i++) {
-        calendar.innerHTML += `<div></div>`;
-    }
+    for (let i = 0; i < firstDayIndex; i++) calendar.innerHTML += `<div></div>`;
 
     for (let day = 1; day <= lastDay; day++) {
         const div = document.createElement("div");
@@ -50,9 +47,7 @@ function renderCalendar() {
         div.innerText = day;
 
         const dayDate = new Date(currentYear, currentMonth, day);
-        if (dayDate < todayDateOnly) {
-            div.classList.add("disabled");
-        }
+        if (dayDate < todayDateOnly) div.classList.add("disabled");
 
         div.addEventListener("click", () => {
             if (reservaFeita || dayDate < todayDateOnly) return;
@@ -62,32 +57,32 @@ function renderCalendar() {
             renderSlots();
         });
 
+        if (dayDate.getTime() === todayDateOnly.getTime() && !reservaFeita) {
+            todayDiv = div;
+        }
+
         calendar.appendChild(div);
+    }
+
+    if (todayDiv) {
+        todayDiv.classList.add("selected");
+        selectedDate = `${todayDateOnly.getDate()}/${todayDateOnly.getMonth() + 1}/${todayDateOnly.getFullYear()}`;
+        renderSlots();
     }
 }
 
 document.getElementById("prevMonth").onclick = () => {
-    currentMonth--;
-    if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-    }
+    currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; }
     renderCalendar();
 };
-
 document.getElementById("nextMonth").onclick = () => {
-    currentMonth++;
-    if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-    }
+    currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; }
     renderCalendar();
 };
 
 function renderSlots() {
     const slotsDiv = document.getElementById("slots");
     slotsDiv.innerHTML = "";
-
     horarios.forEach(h => {
         const usados = reservas.filter(r => r.data === selectedDate && r.hora === h.hora).length;
         const full = usados >= h.vagas;
@@ -95,7 +90,6 @@ function renderSlots() {
         const div = document.createElement("div");
         div.classList.add("slot");
         if (full) div.classList.add("full");
-
         div.innerHTML = `<div class="hora">${h.hora}</div><div class="vagas">${h.vagas - usados} spots left</div>`;
 
         if (!full && !reservaFeita) {
@@ -115,7 +109,6 @@ document.getElementById("confirmBtn").onclick = async () => {
     if (!selectedDate || !selectedSlot || reservaFeita) return;
 
     const reserva = { data: selectedDate, hora: selectedSlot };
-
     await fetch(SHEETY_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
