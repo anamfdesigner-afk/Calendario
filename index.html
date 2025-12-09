@@ -3,43 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendário</title>
-
-    <!-- LIGAÇÃO CORRECTA AO CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <title>Reserva de Vagas</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <div class="calendar-container">
         <div class="calendar-header">
-            <button id="prev-month">&lt;</button>
-            <h2 id="current-month"></h2>
-            <button id="next-month">&gt;</button>
+            <button id="prevMonth">&lt;</button>
+            <h2 id="monthYear"></h2>
+            <button id="nextMonth">&gt;</button>
         </div>
-
-        <table class="calendar-table">
-            <thead>
-                <tr>
-                    <th>Dom</th>
-                    <th>Seg</th>
-                    <th>Ter</th>
-                    <th>Qua</th>
-                    <th>Qui</th>
-                    <th>Sex</th>
-                    <th>Sáb</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body"></tbody>
-        </table>
-
-        <div id="slots-container">
-            <h3>Horários disponíveis</h3>
-            <div id="slots"></div>
-        </div>
+        <div id="calendar"></div>
     </div>
 
-    <!-- LIGAÇÃO CORRECTA AO JS -->
+    <div id="slots-container">
+        <h3>Horários disponíveis</h3>
+        <div id="slots"></div> <!-- ESTE É O ELEMENTO QUE FALTAVA -->
+    </div>
+
+    <div id="confirm-container" style="display:none;">
+        <button id="confirmBtn">Confirmar Reserva</button>
+    </div>
+
+    <div id="message"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
+
+
