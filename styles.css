@@ -1,73 +1,73 @@
-html, body {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: 'Lato', Arial, sans-serif;
-    color: #323f3c;
-    box-sizing: border-box;
-    background-color: transparent;
-    text-align: center; /* apenas para texto */
+/* ----------------------
+   CONFIGURAÇÃO GLOBAL
+---------------------- */
+body {
+    font-family: Lato, sans-serif;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
 }
 
+/* ----------------------
+   TÍTULO
+---------------------- */
 h1 {
-    font-family: 'Baskerville', serif;
+    font-family: Baskervile, serif;
+    font-weight: normal;
     font-size: 28px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
-.calendar-container,
-#slots-container {
-    display: block; /* garante que margin auto funcione */
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto; /* centraliza no ecrã */
+/* ----------------------
+   CALENDÁRIO
+---------------------- */
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
 }
 
-#monthYear, #slots-container h3 {
-    font-weight: 400;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-
-.nav-month {
+.calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 20px;
+    max-width: 400px;
+    margin-bottom: 10px;
 }
 
-.nav-month button {
-    width: 40px;
-    height: 40px;
+.calendar-header h2 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.calendar-header button {
     font-size: 18px;
-    background-color: #323f3c;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    padding: 5px 10px;
     cursor: pointer;
-}
-
-#monthYear {
-    flex-grow: 1;
-    text-align: center;
 }
 
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    max-width: 100%; /* não ultrapassa container */
-    margin: 0 auto; /* centraliza grid */
+    gap: 5px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .day {
-    padding: 12px;
-    border-radius: 8px;
+    padding: 10px;
+    background-color: #eee;
+    text-align: center;
     cursor: pointer;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    background-color: transparent;
+    border-radius: 4px;
 }
 
 .day.selected {
@@ -76,27 +76,47 @@ h1 {
 }
 
 .day.disabled {
+    background-color: #ddd;
     color: #aaa;
     cursor: not-allowed;
 }
 
-.slots {
+/* ----------------------
+   HORÁRIOS
+---------------------- */
+#slots-container {
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-top: 30px;
+}
+
+#slots-container h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+#slots {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    max-width: 100%; /* não ultrapassa container */
-    margin: 20px auto 0 auto;
+    gap: 10px;
 }
 
 .slot {
-    border-radius: 8px;
-    padding: 12px;
+    padding: 10px;
+    background-color: #ddd;
+    border-radius: 4px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid #ddd;
-    background-color: transparent;
+}
+
+.slot span {
+    font-size: 12px;
+    margin-top: 4px;
 }
 
 .slot.selected {
@@ -105,46 +125,44 @@ h1 {
 }
 
 .slot.full {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-.slot .hora {
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.slot .vagas {
-    font-size: 12px;
-    font-weight: 400;
-    margin-top: 4px;
-}
-
-#confirmBtn {
-    margin-top: 20px;
-    padding: 12px 18px;
-    font-size: 16px;
-    background-color: #323f3c;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-#confirmBtn:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* ----------------------
+   BOTÃO DE CONFIRMAÇÃO
+---------------------- */
+#confirm-container button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 #message {
     margin-top: 20px;
-    font-weight: 600;
+    font-weight: bold;
     color: #323f3c;
-    font-size: 14px;
 }
 
+/* ----------------------
+   RESPONSIVO MOBILE
+---------------------- */
 @media (max-width: 500px) {
-    .slots {
+    .calendar {
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+
+    .day {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    #slots {
         grid-template-columns: 1fr;
+    }
+
+    #slots-container h3, .calendar-header h2 {
+        font-size: 14px;
     }
 }
